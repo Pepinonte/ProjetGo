@@ -1,7 +1,19 @@
 package foldermanagement
 
-import "os"
+import (
+	"errors"
+	"os"
+)
 
 func RenameFolder(path string, newPath string) error {
-	return os.Rename(path, newPath)
+	if path == "" {
+		return errors.New("path vide")
+	}
+		err:=os.Rename(path, newPath)
+
+		if err != nil {
+			return err
+		}
+		return nil
+
 }

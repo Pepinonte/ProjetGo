@@ -1,10 +1,19 @@
 package foldermanagement
 
-import "os"
+import (
+	"errors"
+	"os"
+)
 
-func CreateFolder(path string) {
+var ErrPathVoid = errors.New("path vide")
+
+func CreateFolder(path string)  error{
 	err := os.Mkdir(path, 0755)
-	if err != nil {
-		panic(err)
+	if path == ""  {
+		return errors.New("path vide")
 	}
+	if err != nil {
+		return err
+	}
+	return nil
 }

@@ -1,10 +1,17 @@
 package foldermanagement
 
-import "os"
+import (
+	"errors"
+	"os"
+)
 
-func DeleteFolder(path string) {
+func DeleteFolder(path string) error{
 	err := os.RemoveAll(path)
-	if err != nil {
-		panic(err)
+	if path == ""  {
+		return errors.New("path vide")
 	}
+	if err != nil {
+		return err
+	}
+	return nil
 }
