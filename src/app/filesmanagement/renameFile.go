@@ -5,19 +5,19 @@ import (
 	"os"
 )
 
-func RenameFile(name string, newName string) error {
+func RenameFile(name string, newName string) (string, error) {
 	if name == "" {
-		return fmt.Errorf("le nom du fichier est vide")
+		return "", fmt.Errorf("le nom du fichier est vide")
 	}
 
 	if newName == "" {
-		return fmt.Errorf("le nouveau nom du fichier est vide")
+		return "", fmt.Errorf("le nouveau nom du fichier est vide")
 	}
 	err := os.Rename(name, newName)
 	if err != nil {
 		fmt.Println("Impossible d'ouvrir le fichier")
-		return err
+		return "", err
 	}
 
-	return nil
+	return "succes", nil
 }

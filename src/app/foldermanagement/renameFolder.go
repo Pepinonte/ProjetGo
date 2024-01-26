@@ -5,15 +5,15 @@ import (
 	"os"
 )
 
-func RenameFolder(path string, newPath string) error {
+func RenameFolder(path string, newPath string) (string, error) {
 	if path == "" {
-		return errors.New("path vide")
+		return "", errors.New("path vide")
 	}
 		err:=os.Rename(path, newPath)
 
 		if err != nil {
-			return err
+			return "", err
 		}
-		return nil
+		return "succes", nil
 
 }

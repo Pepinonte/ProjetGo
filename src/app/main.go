@@ -1,40 +1,152 @@
 package main
 
 import (
+	"app/database"
 	"app/filesmanagement"
 	"app/foldermanagement"
 	"os"
+	"time"
 )
 
 func main() {
 
+	database.Condb()
+	var arguments string
+	currentTime := time.Now()
+
 	switch os.Args[1] {
 	case "createFolder":
-		foldermanagement.CreateFolder(os.Args[2])
+		outputCaseCreateFolder, err := foldermanagement.CreateFolder(os.Args[2])
+		for i := 1; i < len(os.Args); i++ {
+			arguments += os.Args[i] + " "
+		}
+
+		if err != nil {
+			database.AddLog(currentTime.Format("2006.01.02 15:04:05"), "foldermanagement", "CreateFolder()", arguments, err.Error())
+		} else {
+			database.AddLog(currentTime.Format("2006.01.02 15:04:05"), "foldermanagement", "CreateFolder()", arguments, outputCaseCreateFolder)
+		}
 	case "readFolder":
 		if len(os.Args) >= 3 {
-			foldermanagement.ReadFolder(os.Args[2])
-			
+			outputCaseReadFolder, err := foldermanagement.ReadFolder(os.Args[2])
+			for i := 1; i < len(os.Args); i++ {
+				arguments += os.Args[i] + " "
+			}
+	
+			if err != nil {
+				database.AddLog(currentTime.Format("2006.01.02 15:04:05"), "foldermanagement", "ReadFolder()", arguments, err.Error())
+			} else {
+				database.AddLog(currentTime.Format("2006.01.02 15:04:05"), "foldermanagement", "ReadFolder()", arguments, outputCaseReadFolder)
+			}
 		} else {
-			foldermanagement.ReadFolder("")
+			outputCaseReadFolder, err := foldermanagement.ReadFolder("")
+			for i := 1; i < len(os.Args); i++ {
+				arguments += os.Args[i] + " "
+			}
+	
+			if err != nil {
+				database.AddLog(currentTime.Format("2006.01.02 15:04:05"), "foldermanagement", "ReadFolder()", arguments, err.Error())
+			} else {
+				database.AddLog(currentTime.Format("2006.01.02 15:04:05"), "foldermanagement", "ReadFolder()", arguments, outputCaseReadFolder)
+			}
 		}
 	case "deleteFolder":
-		foldermanagement.DeleteFolder(os.Args[2])
+
+		outputCaseDeleteFolder, err := foldermanagement.DeleteFolder(os.Args[2])
+		for i := 1; i < len(os.Args); i++ {
+			arguments += os.Args[i] + " "
+		}
+
+		if err != nil {
+			database.AddLog(currentTime.Format("2006.01.02 15:04:05"), "foldermanagement", "DeleteFolder()", arguments, err.Error())
+		} else {
+			database.AddLog(currentTime.Format("2006.01.02 15:04:05"), "foldermanagement", "DeleteFolder()", arguments, outputCaseDeleteFolder)
+		}
 	case "renameFolder":
+
+		outputCaseRenameFolder, err := foldermanagement.RenameFolder(os.Args[2], os.Args[3])
+		for i := 1; i < len(os.Args); i++ {
+			arguments += os.Args[i] + " "
+		}
+
+		if err != nil {
+			database.AddLog(currentTime.Format("2006.01.02 15:04:05"), "foldermanagement", "RenameFolder()", arguments, err.Error())
+		} else {
+			database.AddLog(currentTime.Format("2006.01.02 15:04:05"), "foldermanagement", "RenameFolder()", arguments, outputCaseRenameFolder)
+		}
+
 		foldermanagement.RenameFolder(os.Args[2], os.Args[3])
 	case "createFile":
-		filesmanagement.CreateFile(os.Args[2])
+
+		outputCaseCreateFile, err :=  filesmanagement.CreateFile(os.Args[2])
+		for i := 1; i < len(os.Args); i++ {
+			arguments += os.Args[i] + " "
+		}
+
+		if err != nil {
+			database.AddLog(currentTime.Format("2006.01.02 15:04:05"), "filemanagement", "CreateFile()", arguments, err.Error())
+		} else {
+			database.AddLog(currentTime.Format("2006.01.02 15:04:05"), "filesmanagement", "CreateFile()", arguments, outputCaseCreateFile)
+		}
 	case "deleteFile":
-			filesmanagement.DeleteFile(os.Args[2])		
+
+		outputCaseDeleteFile, err := filesmanagement.DeleteFile(os.Args[2])	
+		for i := 1; i < len(os.Args); i++ {
+			arguments += os.Args[i] + " "
+		}
+
+		if err != nil {
+			database.AddLog(currentTime.Format("2006.01.02 15:04:05"), "filemanagement", "DeleteFile()", arguments, err.Error())
+		} else {
+			database.AddLog(currentTime.Format("2006.01.02 15:04:05"), "filemanagement", "DeleteFile()", arguments, outputCaseDeleteFile)
+		}	
 	case "readFile":
-			filesmanagement.ReadFile(os.Args[2])
+
+		outputCaseReadFile, err := filesmanagement.ReadFile(os.Args[2])
+		for i := 1; i < len(os.Args); i++ {
+			arguments += os.Args[i] + " "
+		}
+
+		if err != nil {
+			database.AddLog(currentTime.Format("2006.01.02 15:04:05"), "filemanagement", "ReadFile()", arguments, err.Error())
+		} else {
+			database.AddLog(currentTime.Format("2006.01.02 15:04:05"), "filemanagement", "ReadFile()", arguments, outputCaseReadFile)
+		}
 	case "modifyFile":
-		filesmanagement.ModifyFile(os.Args[2], os.Args[3])
+
+		outputCaseModifyFile, err := filesmanagement.ModifyFile(os.Args[2], os.Args[3])
+		for i := 1; i < len(os.Args); i++ {
+			arguments += os.Args[i] + " "
+		}
+
+		if err != nil {
+			database.AddLog(currentTime.Format("2006.01.02 15:04:05"), "filemanagement", "ModifyFile()", arguments, err.Error())
+		} else {
+			database.AddLog(currentTime.Format("2006.01.02 15:04:05"), "filemanagement", "ModifyFile()", arguments, outputCaseModifyFile)
+		}
 	case "renameFile":
-		filesmanagement.RenameFile(os.Args[2], os.Args[3])
+
+		outputCaseRenameFile, err := filesmanagement.RenameFile(os.Args[2], os.Args[3])
+		for i := 1; i < len(os.Args); i++ {
+			arguments += os.Args[i] + " "
+		}
+
+		if err != nil {
+			database.AddLog(currentTime.Format("2006.01.02 15:04:05"), "filemanagement", "RenameFile()", arguments, err.Error())
+		} else {
+			database.AddLog(currentTime.Format("2006.01.02 15:04:05"), "filenagement", "RenameFile()", arguments, outputCaseRenameFile)
+		}
+	case "showLogs":
+
+		outputCaseShowLog,  err := database.GetLogs()
+		for i := 1; i < len(os.Args); i++ {
+			arguments += os.Args[i] + " "
+		}
+		
+		if err != nil {
+			database.AddLog(currentTime.Format("2006.01.02 15:04:05"), "database", "GetLogs()", arguments, err.Error())
+		} else {
+			database.AddLog(currentTime.Format("2006.01.02 15:04:05"), "database", "GetLogs()", arguments, outputCaseShowLog)
+		}
 	}
-
-	
-
-
 }

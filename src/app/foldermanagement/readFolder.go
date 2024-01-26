@@ -5,17 +5,17 @@ import (
 	"os"
 )
 
-func ReadFolder(path string) error{
+func ReadFolder(path string) (string, error){
 	if path == "" {
 		path = "."
 	}
 	files, err := os.ReadDir(path)
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	for _, file := range files {
 		fmt.Println(file.Name())
 	}
-	return nil
+	return "succes" ,nil
 }

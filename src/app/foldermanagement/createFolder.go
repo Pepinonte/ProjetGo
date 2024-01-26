@@ -7,13 +7,13 @@ import (
 
 var ErrPathVoid = errors.New("path vide")
 
-func CreateFolder(path string)  error{
+func CreateFolder(path string)  (string, error){
 	err := os.Mkdir(path, 0755)
 	if path == ""  {
-		return errors.New("path vide")
+		return "",errors.New("path vide")
 	}
 	if err != nil {
-		return err
+		return "",err
 	}
-	return nil
+	return "Dossier créé", nil
 }
