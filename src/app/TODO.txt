@@ -1,0 +1,7 @@
+//  TODO
+corriger structure de mod   [ a verifier ]
+gestion d'un fichier de test  [ pending ]
+adaptation du systeme d'appel de methodes avec des interfaces/structures  [ OK ]
+tester l'interfaces IcliMode [ OK ]
+gestion des ttd [ pending ]
+implementer toutes les routes [ pending ]

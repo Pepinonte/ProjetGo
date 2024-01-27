@@ -25,7 +25,7 @@ func Condb() string{
 			User:                 "root",
 			Passwd:               "root",
 			Net:                  "tcp",
-			Addr:                 "localhost:3307",
+			Addr:                 "localhost:3306",
 			DBName:               "projetgo",
 		}
 
@@ -41,22 +41,4 @@ func Condb() string{
 		}
 		fmt.Println("Connected!")
 		return "Connected!"
-
-		// id, err := addLog(Log{
-		// 	date:  "2020-01-01",
-		// 	module: "module1",
-		// 	fonction:  "fonction1",
-		// 	arguments:  "arguments1",
-		// 	output:  "output1",
-		// })
-
-		// if err != nil {
-		// 	log.Fatal(err)
-		// }
-		// fmt.Printf("ID of added log: %v\n", id)
-
-
-
 }
-
-
