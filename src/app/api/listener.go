@@ -4,19 +4,25 @@ import (
 	"app/database"
 	"app/filesmanagement"
 	"app/foldermanagement"
+	"fmt"
 	"net/http"
-	"os"
 
 	"github.com/gin-gonic/gin"
 )
 
-type Sdossier struct {
-	ID    		string `json:"id"`
-	name		string `json:"name"`
-	children	[]os.DirEntry `json:"children"`
+type Children struct {
+	Name string
 }
 
+type Sdossier struct {
+	ID    		string `json:"id"`
+	Name		string `json:"name"`
+	Children	[]Children `json:"children"`
+}
+
+
 func RunListener() {
+	//TODO: penser a adapter le nom des routes pour s'adapter au REST
 	router := gin.Default()
 	router.GET("showLogs", showLogs)
 	router.POST("/createFolder/:name", createFolder)
@@ -31,9 +37,15 @@ func RunListener() {
 	router.Run("localhost:8080")
 }
 
+//TODO: penser a recuperer des json depuis les fonctions(a partir de strucs)
 func createFolder(c *gin.Context) {
 	name := c.Param("name")
-	foldermanagement.CreateFolder(name)
+	body, err := foldermanagement.CreateFolder(name)
+	if err != nil {
+		fmt.Println("err", err)
+	}
+	c.IndentedJSON(http.StatusOK, body)
+	fmt.Println("body", body)
 }
 
 func deleteFolder(c *gin.Context) {
@@ -42,10 +54,17 @@ func deleteFolder(c *gin.Context) {
 }
 
 func readFolder(c *gin.Context) {
-	name := c.Param("name")
-	_,_,data :=foldermanagement.ReadFolder(name)
-	var myFolder = Sdossier{name: name, children: data}
-	c.IndentedJSON(http.StatusOK, myFolder)
+    name := c.Param("name")
+    _,_,data := foldermanagement.ReadFolder(name)
+
+    var children []Children
+    for _, childName := range data {
+        children = append(children, Children{Name: childName})
+    }
+
+    var myFolder = Sdossier{Name: name, Children: children}
+    fmt.Println("myFolder",myFolder)
+    c.IndentedJSON(http.StatusOK, myFolder)
 }
 
 func renameFolder(c *gin.Context) {

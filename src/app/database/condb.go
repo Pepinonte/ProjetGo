@@ -25,7 +25,7 @@ func Condb() string{
 			User:                 "root",
 			Passwd:               "root",
 			Net:                  "tcp",
-			Addr:                 "localhost:3307",
+			Addr:                 "localhost:3306",
 			DBName:               "projetgo",
 		}
 

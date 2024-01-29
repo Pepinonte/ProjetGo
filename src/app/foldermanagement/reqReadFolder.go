@@ -3,36 +3,44 @@ package foldermanagement
 import (
 	"encoding/json"
 	"fmt"
-	"io"
 	"log"
 	"net/http"
-	"os"
 )
+
+type Children struct{
+	Name string
+}
 
 type Sdossier struct {
 	ID    		string `json:"id"`
-	name		string `json:"name"`
-	children	[]os.DirEntry `json:"children"`
+	Name		string `json:"name"`
+	Children	[]Children `json:"children"`
 }
+
+
 
 func ReqReadFolder(name string) {	
-	readFolder(name)
+	test := readFolder(name)
+	fmt.Println("testtt",test)
 }
 
-func readFolder(name string) {
-	url := server + "/readFolder/" + name
-	resp, err := http.Get(url)
-	if err != nil {
-		log.Fatalln(err)
-	}
-	defer resp.Body.Close()
+func readFolder(name string) Sdossier {
+    url := server + "/readFolder/" + name
+    resp, err := http.Get(url)
+    if err != nil {
+        log.Fatalln(err)
+    }
+    defer resp.Body.Close()
 
-	if resp.StatusCode != http.StatusCreated {
-		log.Fatalln(resp.Body)
-	}
-	var rep []Sdossier
-	bodybytes, _ := io.ReadAll(resp.Body)
-	json.Unmarshal(bodybytes, &rep)
-	fmt.Println("dsdsddddddddd",rep)
+    if resp.StatusCode != http.StatusOK {
+        log.Fatalln(resp.Body)
+    }
+    var rep Sdossier
+    json.NewDecoder(resp.Body).Decode(&rep)
 
+    var children []Children
+    for _, child := range rep.Children {
+        children = append(children, Children{Name: child.Name})
+    }
+    return Sdossier{Name: rep.Name, Children: children}
 }

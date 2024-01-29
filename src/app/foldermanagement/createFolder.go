@@ -3,30 +3,47 @@ package foldermanagement
 import (
 	"app/database"
 	"errors"
+	"fmt"
 	"os"
 	"time"
 )
 
 var ErrPathVoid = errors.New("path vide")
 
-func CreateFolder(path string)  (string, error){
+func CreateFolder(path string)  (Sdossier, error){
 	err := os.Mkdir(path, 0755)
 	database.Condb()
 	currentTime := time.Now()
 	output := "success"
+	var fileNames []string
 	
 	if path == ""  {
 		output = "path vide"
-		return "",errors.New(output)
+		return Sdossier{},errors.New(output)
 	}
 	if err != nil {
 		output = err.Error()
-		return "", err
+		return Sdossier{}, err
 	}	
+
+	files, err := os.ReadDir(path)
+
+	for _, file := range files {
+		fmt.Println(file.Name())
+		fileNames = append(fileNames, file.Name()) // Ajouter le nom du fichier à la slice
+	}
+
+	var children []Children
+    for _, childName := range fileNames {
+        children = append(children, Children{Name: childName})
+    }
+
+    var myFolder = Sdossier{Name: path, Children: children}
+		fmt.Println("myFolder",myFolder)
 
 	database.AddLog(currentTime.Format("2006.01.02 15:04:05"), "foldermanagement", "CreateFolder()", path, output)
 
-	return output, nil
+	return myFolder, nil
 }
 
 
