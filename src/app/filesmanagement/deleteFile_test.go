@@ -9,7 +9,7 @@ func TestDeleteFile(t *testing.T) {
 	file, _ := os.Create("gravity.txt")
 	file.Close()
 	
-	_,err := DeleteFile("gravity.txt")
+	err := DeleteFile("gravity.txt")
 	if err != nil {
 		
 		t.Errorf("Error occurred: %v", err)
@@ -19,7 +19,7 @@ func TestDeleteFile(t *testing.T) {
 
 func TestDeleteFileWithoutPath(t *testing.T) {
 	// delete file without argument path
-	_,err := DeleteFile("")
+	err := DeleteFile("")
 	if err == nil {
 		t.Errorf("Error occurred: %v", err)
 	}
@@ -29,7 +29,7 @@ func TestDeleteFileWithoutPath(t *testing.T) {
 
 func TestDeleteFileWithNonExistingFile(t *testing.T) {
 	// delete file with non existing file
-	_,err := DeleteFile("nonexistingfile.txt")
+	err := DeleteFile("nonexistingfile.txt")
 	if err == nil {
 		t.Errorf("Error occurred: %v", err)
 	}

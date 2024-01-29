@@ -3,12 +3,7 @@ corriger structure de mod   [ OK ]
 gestion d'un fichier de test  [ pending ]
 adaptation du systeme d'appel de methodes avec des interfaces/structures  [ OK ]
 tester l'interfaces IcliMode [ OK ]
-refaire gestion des ttd [ OK ]
+refaire gestion des ttd [ pending ]
 implementer toutes les routes folder[ OK ]
-implementer toutes les routes file[ OK ]
+implementer toutes les routes file[ pending ]
 reverifier gestion d'erreurs  [ in progress ]
-faire des routes API REST avec juste les verbes ( askip faut un json ) [ Pending ]
-    -> GET Folders
-    -> GET Folder/:Name
-    -> POST Folder/:Name
-    -> etc etc

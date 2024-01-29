@@ -7,7 +7,7 @@ import (
 
 func TestCreateFile(t *testing.T) {
 	
-	_,err := CreateFile("filecreated.txt")
+	err := CreateFile("filecreated.txt")
 	if err != nil {
 		t.Errorf("Error occurred: %v", err)
 	}
@@ -18,7 +18,7 @@ func TestCreateFile(t *testing.T) {
 
 func TestCreateFileWithWrongPath(t *testing.T) {
 	// create file with wrong path
-	_,err := CreateFile("wrongpath/filecreated.txt")
+	err := CreateFile("wrongpath/filecreated.txt")
 	if err == nil {
 		t.Errorf("Error occurred: %v", err)
 	}
@@ -29,7 +29,7 @@ func TestCreateFileWithExistingFile(t *testing.T) {
 	// create file with existing file
 	file, _ := os.Create("test.txt")
 	file.Close()
-	_,err := CreateFile("test.txt")
+	err := CreateFile("test.txt")
 	if err == nil {
 		t.Errorf("Error occurred: %v", err)
 	}
@@ -38,7 +38,7 @@ func TestCreateFileWithExistingFile(t *testing.T) {
 
 func TestCreateFileWithEmptyPath(t *testing.T) {
 	// create file with empty path
-	_,err := CreateFile("")
+	err := CreateFile("")
 
 	if err == nil {
 		t.Errorf("Error occurred: %v", err)

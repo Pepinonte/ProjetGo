@@ -10,7 +10,7 @@ func TestRenameFile(t *testing.T) {
 	file.Close()
 	
 	
- 	_,err :=	RenameFile("fichierarename.txt", "fichierrename.txt")
+ 	err :=	RenameFile("fichierarename.txt", "fichierrename.txt")
 	if err != nil {
 		t.Errorf("Error occurred: %v", err)
 	}
@@ -20,7 +20,7 @@ func TestRenameFile(t *testing.T) {
 
 func TestRenameFileWithWrongPath(t *testing.T) {
 	// rename file with wrong path
-	_,err := RenameFile("badfile.txt", "goodfile.txt")
+	err := RenameFile("badfile.txt", "goodfile.txt")
 	if err == nil {
 		t.Errorf("Error occurred: %v", err)
 	}
@@ -29,7 +29,7 @@ func TestRenameFileWithWrongPath(t *testing.T) {
 
 func TestRenameFileWithEmptyPath(t *testing.T) {
 	// rename file with empty path
-	_,err := RenameFile("", "goodfile.txt")
+	err := RenameFile("", "goodfile.txt")
 	if err == nil {
 		t.Errorf("Error occurred: %v", err)
 	}
@@ -40,7 +40,7 @@ func TestRenameFileWithEmptyNewName(t *testing.T) {
 	file, _ := os.Create("fichierarename.txt")
 	file.Close()
 	// rename file with empty new name
-	_,err := RenameFile("fichierarename.txt", "")
+	err := RenameFile("fichierarename.txt", "")
 	if err == nil {
 		t.Errorf("Error occurred: %v", err)
 	}
