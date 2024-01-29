@@ -10,7 +10,7 @@ func TestModifyFile(t *testing.T) {
 
 	file.Close()
 
-	err:=ModifyFile("fichiermodif.txt", "test")
+	_,err:=ModifyFile("fichiermodif.txt", "test")
 
 	if err != nil {
 		t.Errorf("Error occurred: %v", err)
@@ -21,7 +21,7 @@ func TestModifyFile(t *testing.T) {
 
 func TestModifyFileWithWrongPath(t *testing.T) {
 	// modify file with wrong path
-	err := ModifyFile("wrongpath/fichiermodif.txt", "test")
+	_,err := ModifyFile("wrongpath/fichiermodif.txt", "test")
 	if err == nil {
 		t.Errorf("Error occurred: %v", err)
 	}
@@ -30,7 +30,7 @@ func TestModifyFileWithWrongPath(t *testing.T) {
 
 func TestModifyFileWithoutPath(t *testing.T) {
 	// modify file without argument path
-	err := ModifyFile("", "test")
+	_,err := ModifyFile("", "test")
 	if err == nil {
 		t.Errorf("Error occurred: %v", err)
 	}
@@ -41,7 +41,7 @@ func TestModifyFileWithEmptyContent(t *testing.T) {
 	// modify file with empty content
 	file, _ := os.Create("fichiermodif.txt")
 	file.Close()
-	err := ModifyFile("fichiermodif.txt", "")
+	_,err := ModifyFile("fichiermodif.txt", "")
 	if err == nil {
 		t.Errorf("Error occurred: %v", err)
 	}
