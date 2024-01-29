@@ -13,16 +13,20 @@ func CreateFolder(path string)  (string, error){
 	err := os.Mkdir(path, 0755)
 	database.Condb()
 	currentTime := time.Now()
+	output := "success"
 	
 	if path == ""  {
-		return "",errors.New("path vide")
+		output = "path vide"
+		return "",errors.New(output)
 	}
 	if err != nil {
-		database.AddLog(currentTime.Format("2006.01.02 15:04:05"), "foldermanagement", "CreateFolder()", path, "success")
-
+		output = err.Error()
 		return "", err
-	}
-	return "success", nil
+	}	
+
+	database.AddLog(currentTime.Format("2006.01.02 15:04:05"), "foldermanagement", "CreateFolder()", path, output)
+
+	return output, nil
 }
 
 
