@@ -11,14 +11,18 @@ func DeleteFolder(path string) (string, error){
 	err := os.RemoveAll(path)
 	database.Condb()
 	currentTime := time.Now()
+	output := "success"
 
 	if path == ""  {
-		return "", errors.New("path vide")
+		output = "path vide"
+		return "", errors.New(output)
 	}
 	if err != nil {
-		database.AddLog(currentTime.Format("2006.01.02 15:04:05"), "foldermanagement", "DeleteFolder()", path, "success")
-		
+		output = err.Error()
 		return "", err
 	}
-	return "succes", nil
+
+	database.AddLog(currentTime.Format("2006.01.02 15:04:05"), "foldermanagement", "DeleteFolder()", path, output)
+
+	return output, nil
 }
