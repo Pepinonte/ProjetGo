@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func ReadFolder(path string) (string, error){
+func ReadFolder(path string) (string, error, []os.DirEntry){
 	files, err := os.ReadDir(path)
 	database.Condb()
 	currentTime := time.Now()
@@ -16,13 +16,13 @@ func ReadFolder(path string) (string, error){
 
 	if path == "" {
 		output = "path vide"
-		return "",errors.New(output)
+		return "",errors.New(output), nil
 	}
 	
 	if err != nil {
 		output = err.Error()
 		
-		return "", err
+		return "", err, nil
 	}
 
 	for _, file := range files {
@@ -31,5 +31,5 @@ func ReadFolder(path string) (string, error){
 
 	database.AddLog(currentTime.Format("2006.01.02 15:04:05"), "foldermanagement", "ReadFolder()", path, output)
 
-	return "succes" ,nil
+	return "succes" ,nil, files
 }

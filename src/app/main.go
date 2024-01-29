@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-const conMode = "offline"
+const conMode = "online"
 
 func main() {
 	choiser(conMode, os.Args)

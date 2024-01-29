@@ -4,7 +4,6 @@ import (
 	"app/database"
 	"app/filesmanagement"
 	"app/foldermanagement"
-	"fmt"
 )
 
 type IcliMode interface {
@@ -60,24 +59,35 @@ func (cl *Schoise) CreateFolder() (string, error) {
 	if cl.conMode == "offline" {
 		foldermanagement.CreateFolder(cl.arguments[2])
 	} else if cl.conMode == "online" {
-		fmt.Println("online")
 		foldermanagement.ReqCreateFolder(cl.arguments[2])
 	}
 	return cl.arguments[0], nil
 }
 
 func (cl *Schoise) DeleteFolder() (string, error) {
-	foldermanagement.DeleteFolder(cl.arguments[2])
+	if cl.conMode == "offline" {
+		foldermanagement.DeleteFolder(cl.arguments[2])
+	} else if cl.conMode == "online" {
+		foldermanagement.ReqDeleteFolder(cl.arguments[2])
+	}
 	return cl.arguments[0], nil
 }
 
 func (cl *Schoise) ReadFolder() (string, error) {
-	foldermanagement.ReadFolder(cl.arguments[2])
+	if cl.conMode == "offline" {
+		foldermanagement.ReadFolder(cl.arguments[2])
+	} else if cl.conMode == "online" {
+		foldermanagement.ReqReadFolder(cl.arguments[2])
+	}
 	return cl.arguments[0], nil
 }
 
 func (cl *Schoise) RenameFolder() (string, error) {
-	foldermanagement.RenameFolder(cl.arguments[2], cl.arguments[3])
+	if cl.conMode == "offline" {
+		foldermanagement.RenameFolder(cl.arguments[2], cl.arguments[3])
+	} else if cl.conMode == "online" {
+		// foldermanagement.ReqRenameFolder(cl.arguments[2], cl.arguments[3])
+	}
 	return cl.arguments[0], nil
 }
 

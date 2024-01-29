@@ -4,9 +4,17 @@ import (
 	"app/database"
 	"app/filesmanagement"
 	"app/foldermanagement"
+	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 )
+
+type Sdossier struct {
+	ID    		string `json:"id"`
+	name		string `json:"name"`
+	children	[]os.DirEntry `json:"children"`
+}
 
 func RunListener() {
 	router := gin.Default()
@@ -35,7 +43,9 @@ func deleteFolder(c *gin.Context) {
 
 func readFolder(c *gin.Context) {
 	name := c.Param("name")
-	foldermanagement.ReadFolder(name)
+	_,_,data :=foldermanagement.ReadFolder(name)
+	var myFolder = Sdossier{name: name, children: data}
+	c.IndentedJSON(http.StatusOK, myFolder)
 }
 
 func renameFolder(c *gin.Context) {
