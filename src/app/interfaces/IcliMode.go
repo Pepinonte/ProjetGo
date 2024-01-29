@@ -4,6 +4,7 @@ import (
 	"app/database"
 	"app/filesmanagement"
 	"app/foldermanagement"
+	"fmt"
 )
 
 type IcliMode interface {
@@ -22,10 +23,11 @@ type IcliMode interface {
 type Schoise struct {
 	mode      string
 	arguments []string
+	conMode	 string
 }
 
-func IcliModeMain(arguments []string) {
-	mycli := Schoise{arguments[1], arguments}
+func IcliModeMain(conMode string,arguments []string) {
+	mycli := Schoise{arguments[1], arguments, conMode}
 	execute(&mycli ,mycli)
 }
 
@@ -55,7 +57,12 @@ func execute(cl IcliMode, st Schoise) {
 }
 
 func (cl *Schoise) CreateFolder() (string, error) {
-	foldermanagement.CreateFolder(cl.arguments[2])
+	if cl.conMode == "offline" {
+		foldermanagement.CreateFolder(cl.arguments[2])
+	} else if cl.conMode == "online" {
+		fmt.Println("online")
+		foldermanagement.ReqCreateFolder(cl.arguments[2])
+	}
 	return cl.arguments[0], nil
 }
 

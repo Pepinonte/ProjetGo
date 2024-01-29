@@ -20,7 +20,7 @@ func RunListener() {
 	router.PUT("/modifyFile/:name/:content", modifyFile)
 	router.GET("/readFile/:name", readFile)
 	router.PUT("/renameFile/:lname/:nname", renameFile)
-	router.Run("localhost:3307")
+	router.Run("localhost:8080")
 }
 
 func createFolder(c *gin.Context) {
