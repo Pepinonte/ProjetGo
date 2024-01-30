@@ -9,17 +9,18 @@ import (
 )
 
 
-func ReqDeleteFolder(name string, myFolder Sdossier) {	
-	folder := deleteFolder(name, myFolder)
-	fmt.Println("dossier supprimé",folder)
+
+func ReqRenameFolder(lname string, nname string,  myFolder Sdossier){	
+	dossier := renameFolder(lname, nname, myFolder)
+	fmt.Println("dossier modifié",dossier)
 }
 
-func deleteFolder(name string, monDossier Sdossier) Sdossier{
+func renameFolder(ln string, nn string, monDossier Sdossier) Sdossier{
 	jsonReq, _ := json.Marshal(monDossier)
-	url := server + "/deleteFolder/" + name
-	req, err := http.NewRequest("DELETE", url, bytes.NewBuffer(jsonReq))
+	url := server + "/renameFolder/" + ln + "/" + nn
+	req, err := http.NewRequest("PUT", url, bytes.NewBuffer(jsonReq))
 	if err != nil {
-			log.Fatalln(err)
+		log.Fatalln(err)
 	}
 	client := &http.Client{}
 	resp, err := client.Do(req)
@@ -28,10 +29,12 @@ func deleteFolder(name string, monDossier Sdossier) Sdossier{
 	}
 	defer resp.Body.Close()
 
-	// if resp.StatusCode != http.StatusOK {
-	// 		log.Fatalln(resp.StatusCode)
-	// }
-
+	if resp.StatusCode != http.StatusCreated {
+		log.Fatalln(resp.StatusCode)
+	}
+	if resp.StatusCode != http.StatusOK {
+		log.Fatalln(resp.Body)
+	}
 	var rep Sdossier
 	json.NewDecoder(resp.Body).Decode(&rep)
 

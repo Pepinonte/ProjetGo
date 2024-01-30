@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func RenameFolder(path string, newPath string) (Sdossier, error) {
+func RenameFolder(path string, newPath string) (Sdossier, error, []string) {
 	
 		err:=os.Rename(path, newPath)
 		database.Condb()
@@ -18,13 +18,13 @@ func RenameFolder(path string, newPath string) (Sdossier, error) {
 
 		if path == "" {
 			output = "path vide"
-			return Sdossier{}, errors.New(output)
+			return Sdossier{}, errors.New(output), nil
 		}
 
 		if err != nil {
 			output = err.Error()
 
-			return Sdossier{}, err
+			return Sdossier{}, err, nil
 		}
 
 		files, err := os.ReadDir(path)
@@ -44,6 +44,6 @@ func RenameFolder(path string, newPath string) (Sdossier, error) {
 
 		database.AddLog(currentTime.Format("2006.01.02 15:04:05"), "foldermanagement", "RenameFolder()", path, output)
 
-		return myFolder, nil
+		return myFolder, nil, fileNames
 
 }

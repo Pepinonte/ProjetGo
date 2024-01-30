@@ -7,7 +7,7 @@ import (
 
 func TestCreateFolder(t *testing.T) {
 	path := "testCreateFolder"
-	_,err := CreateFolder(path)
+	_,err,_ := CreateFolder(path)
 
 	if err != nil {
 		t.Errorf("Une erreur inattendu est survenue lors de l'execution CreateFolder() : %s", err)
@@ -16,7 +16,7 @@ func TestCreateFolder(t *testing.T) {
 }
 func TestCreateFolderWithEmptyPath(t *testing.T) {
 	path := ""
-	_,err := CreateFolder(path)
+	_,err,_ := CreateFolder(path)
 
 	if err == nil {
 		t.Errorf("Erreur non retournée lors de l'execution de CreateFolder() avec path vide")

@@ -10,7 +10,7 @@ func TestRenameFolder(t *testing.T) {
 	newPath := "testNameRenameFolder"
 	os.Mkdir(path, 0755)
 
-	_,err:=RenameFolder(path, newPath)
+	_,err, _:=RenameFolder(path, newPath)
 
 	if err != nil {
 		t.Errorf("Une erreur inatendu est survenue lors de l'execution de RenameFolder() : %s", err)
@@ -22,7 +22,7 @@ func TestRenameFolderWithEmptyPath(t *testing.T) {
 	path := ""
 	newPath := ""
 	os.Mkdir(path, 0755)
-	_,err:=RenameFolder(path, newPath)
+	_,err, _:=RenameFolder(path, newPath)
 
 	if err == nil {
 		t.Errorf("Erreur retournée lors de l'execution de RenameFolder() avec path vide")

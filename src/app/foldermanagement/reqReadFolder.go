@@ -19,9 +19,9 @@ type Sdossier struct {
 
 
 
-func ReqReadFolder(name string) {	
+func ReqReadFolder(name string, myFolder Sdossier) {	
 	test := readFolder(name)
-	fmt.Println("testtt",test)
+	fmt.Println("dossier affiché",test)
 }
 
 func readFolder(name string) Sdossier {
