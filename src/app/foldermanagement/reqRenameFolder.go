@@ -42,5 +42,6 @@ func renameFolder(ln string, nn string, monDossier Sdossier) Sdossier{
 	for _, child := range rep.Children {
 			children = append(children, Children{Name: child.Name})
 	}
+	
 	return Sdossier{Name: rep.Name, Children: children}
 }

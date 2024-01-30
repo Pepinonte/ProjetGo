@@ -40,6 +40,12 @@ func RunListener() {
 func createFolder(c *gin.Context) {
 	name := c.Param("name")
 	_, err, data := foldermanagement.CreateFolder(name)
+
+	// if len(data) < 3 {
+	// 	fmt.Println("path vide")
+	// 	return
+	// }
+
 	if err != nil {
 		fmt.Println("err", err)
 	}
@@ -63,7 +69,7 @@ func deleteFolder(c *gin.Context) {
     }
 
     var myFolder = Sdossier{Name: name, Children: children}
-    fmt.Println("myFolder",myFolder)
+    // fmt.Println("myFolder",myFolder)
     c.IndentedJSON(http.StatusOK, myFolder)
 }
 
@@ -77,7 +83,7 @@ func readFolder(c *gin.Context) {
     }
 
     var myFolder = Sdossier{Name: name, Children: children}
-    fmt.Println("myFolder",myFolder)
+    // fmt.Println("myFolder",myFolder)
     c.IndentedJSON(http.StatusOK, myFolder)
 }
 
@@ -85,7 +91,7 @@ func renameFolder(c *gin.Context) {
 	lname := c.Param("lname")
 	nname := c.Param("nname")
 	_,_, data := foldermanagement.RenameFolder(lname, nname)
-	fmt.Println("data",data)
+	// fmt.Println("data",data)
 
 	var children []Children
     for _, childName := range data {
@@ -93,7 +99,7 @@ func renameFolder(c *gin.Context) {
     }
 
     var myFolder = Sdossier{Name: nname, Children: children}
-    fmt.Println("myFolder",myFolder)
+    // fmt.Println("myFolder",myFolder)
     c.IndentedJSON(http.StatusOK, myFolder)
 }
 

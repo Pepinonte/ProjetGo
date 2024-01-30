@@ -70,15 +70,15 @@ func (cl *Schoise) CreateFolder() (string, error) {
 		fmt.Println("path vide")
 		return "", errors.New("path vide")
 	}
-	myFolder, _, _ := foldermanagement.CreateFolder(cl.arguments[2])
+	myFolder, err, _ := foldermanagement.CreateFolder(cl.arguments[2])
 	if cl.conMode == "offline" {
 		
-		dos,err,_ := foldermanagement.CreateFolder(cl.arguments[2])
+		// dos,err,_ := foldermanagement.CreateFolder(cl.arguments[2])
 		if err != nil {
 			fmt.Println("une erreur c'est produite",err)
 			return "", err
 		}
-		fmt.Println("dossier crée",dos)
+		fmt.Println("dossier crée",myFolder)
 	} else if cl.conMode == "online" {
 		foldermanagement.ReqCreateFolder(cl.arguments[2], myFolder)
 	}
@@ -91,9 +91,9 @@ func (cl *Schoise) DeleteFolder() (string, error) {
 		return "", errors.New("path vide")
 	}
 
-	myFolder, _, _ := foldermanagement.CreateFolder(cl.arguments[2])
+	myFolder, _, _ := foldermanagement.DeleteFolder(cl.arguments[2])
 	if cl.conMode == "offline" {
-		foldermanagement.DeleteFolder(cl.arguments[2])
+		// foldermanagement.DeleteFolder(cl.arguments[2])
 	} else if cl.conMode == "online" {
 		foldermanagement.ReqDeleteFolder(cl.arguments[2], myFolder)
 	}
@@ -107,9 +107,9 @@ func (cl *Schoise) ReadFolder() (string, error) {
 		return "", errors.New("path vide")
 	}
 
-	myFolder, _, _ := foldermanagement.CreateFolder(cl.arguments[2])
+	myFolder, _, _ := foldermanagement.ReadFolder(cl.arguments[2])
 	if cl.conMode == "offline" {
-		foldermanagement.ReadFolder(cl.arguments[2])
+		// foldermanagement.ReadFolder(cl.arguments[2])
 	} else if cl.conMode == "online" {
 		foldermanagement.ReqReadFolder(cl.arguments[2], myFolder)
 	}
@@ -122,9 +122,9 @@ func (cl *Schoise) RenameFolder() (string, error) {
 		return "", errors.New("il manque des arguments")
 	} 
 
-	myFolder, _, _ := foldermanagement.CreateFolder(cl.arguments[2])
+	myFolder, _, _ := foldermanagement.RenameFolder(cl.arguments[2], cl.arguments[3])
 	if cl.conMode == "offline" {
-		foldermanagement.RenameFolder(cl.arguments[2], cl.arguments[3])
+		// foldermanagement.RenameFolder(cl.arguments[2], cl.arguments[3])
 	} else if cl.conMode == "online" {
 		foldermanagement.ReqRenameFolder(cl.arguments[2], cl.arguments[3], myFolder)
 	}
