@@ -4,6 +4,8 @@ import (
 	"app/database"
 	"app/filesmanagement"
 	"app/foldermanagement"
+	"errors"
+	"fmt"
 )
 
 type IcliMode interface {
@@ -64,9 +66,19 @@ func execute(cl IcliMode, st Schoise) {
 }
 
 func (cl *Schoise) CreateFolder() (string, error) {
+	if len(cl.arguments) < 3 {
+		fmt.Println("path vide")
+		return "", errors.New("path vide")
+	}
 	myFolder, _, _ := foldermanagement.CreateFolder(cl.arguments[2])
 	if cl.conMode == "offline" {
-		foldermanagement.CreateFolder(cl.arguments[2])
+		
+		dos,err,_ := foldermanagement.CreateFolder(cl.arguments[2])
+		if err != nil {
+			fmt.Println("une erreur c'est produite",err)
+			return "", err
+		}
+		fmt.Println("dossier crée",dos)
 	} else if cl.conMode == "online" {
 		foldermanagement.ReqCreateFolder(cl.arguments[2], myFolder)
 	}
@@ -74,6 +86,11 @@ func (cl *Schoise) CreateFolder() (string, error) {
 }
 
 func (cl *Schoise) DeleteFolder() (string, error) {
+	if len(cl.arguments) < 3 {
+		fmt.Println("path vide")
+		return "", errors.New("path vide")
+	}
+
 	myFolder, _, _ := foldermanagement.CreateFolder(cl.arguments[2])
 	if cl.conMode == "offline" {
 		foldermanagement.DeleteFolder(cl.arguments[2])
@@ -84,6 +101,12 @@ func (cl *Schoise) DeleteFolder() (string, error) {
 }
 
 func (cl *Schoise) ReadFolder() (string, error) {
+
+	if len(cl.arguments) < 3 {
+		fmt.Println("path vide")
+		return "", errors.New("path vide")
+	}
+
 	myFolder, _, _ := foldermanagement.CreateFolder(cl.arguments[2])
 	if cl.conMode == "offline" {
 		foldermanagement.ReadFolder(cl.arguments[2])
@@ -94,6 +117,11 @@ func (cl *Schoise) ReadFolder() (string, error) {
 }
 
 func (cl *Schoise) RenameFolder() (string, error) {
+	if len(cl.arguments) < 3 {
+		fmt.Println("path vide")
+		return "", errors.New("il manque des arguments")
+	} 
+
 	myFolder, _, _ := foldermanagement.CreateFolder(cl.arguments[2])
 	if cl.conMode == "offline" {
 		foldermanagement.RenameFolder(cl.arguments[2], cl.arguments[3])

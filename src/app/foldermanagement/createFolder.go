@@ -23,7 +23,7 @@ func CreateFolder(path string) (Sdossier, error, []string){
 	}
 	if err != nil {
 		output = err.Error()
-		return Sdossier{}, err, nil
+		// return Sdossier{}, err, nil
 	}	
 
 	files, err := os.ReadDir(path)
