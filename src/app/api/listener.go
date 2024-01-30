@@ -25,10 +25,10 @@ func RunListener() {
 	//TODO: penser a adapter le nom des routes pour s'adapter au REST
 	router := gin.Default()
 	router.GET("showLogs", showLogs)
-	router.POST("/createFolder/:name", createFolder)
-	router.DELETE("/deleteFolder/:name", deleteFolder)
-	router.GET("/readFolder/:name", readFolder)
-	router.PUT("/renameFolder/:lname/:nname", renameFolder)
+	router.POST("/Folder/:name", createFolder)
+	router.DELETE("/Folder/:name", deleteFolder)
+	router.GET("/Folder/:name", readFolder)
+	router.PUT("/Folder/:lname/:nname", renameFolder)
 	router.POST("/createFile/:name", createFile)
 	router.DELETE("/deleteFile/:name", deleteFile)
 	router.PUT("/modifyFile/:name/:content", modifyFile)
@@ -37,20 +37,34 @@ func RunListener() {
 	router.Run("localhost:8080")
 }
 
-//TODO: penser a recuperer des json depuis les fonctions(a partir de strucs)
 func createFolder(c *gin.Context) {
 	name := c.Param("name")
-	body, err := foldermanagement.CreateFolder(name)
+	_, err, data := foldermanagement.CreateFolder(name)
 	if err != nil {
 		fmt.Println("err", err)
 	}
-	c.IndentedJSON(http.StatusOK, body)
-	fmt.Println("body", body)
+	var children []Children
+	for _, childName := range data {
+			children = append(children, Children{Name: childName})
+	}
+
+	var myFolder = Sdossier{Name: name, Children: children}
+	// fmt.Println("myFolder",myFolder)
+	c.IndentedJSON(http.StatusOK, myFolder)
 }
 
 func deleteFolder(c *gin.Context) {
 	name := c.Param("name")
-	foldermanagement.DeleteFolder(name)
+	_, _, data := foldermanagement.DeleteFolder(name)
+
+	var children []Children
+    for _, childName := range data {
+        children = append(children, Children{Name: childName})
+    }
+
+    var myFolder = Sdossier{Name: name, Children: children}
+    fmt.Println("myFolder",myFolder)
+    c.IndentedJSON(http.StatusOK, myFolder)
 }
 
 func readFolder(c *gin.Context) {
@@ -70,7 +84,17 @@ func readFolder(c *gin.Context) {
 func renameFolder(c *gin.Context) {
 	lname := c.Param("lname")
 	nname := c.Param("nname")
-	foldermanagement.RenameFolder(lname, nname)
+	_,_, data := foldermanagement.RenameFolder(lname, nname)
+	fmt.Println("data",data)
+
+	var children []Children
+    for _, childName := range data {
+        children = append(children, Children{Name: childName})
+    }
+
+    var myFolder = Sdossier{Name: nname, Children: children}
+    fmt.Println("myFolder",myFolder)
+    c.IndentedJSON(http.StatusOK, myFolder)
 }
 
 func createFile(c *gin.Context) {

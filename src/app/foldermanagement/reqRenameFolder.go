@@ -17,7 +17,7 @@ func ReqRenameFolder(lname string, nname string,  myFolder Sdossier){
 
 func renameFolder(ln string, nn string, monDossier Sdossier) Sdossier{
 	jsonReq, _ := json.Marshal(monDossier)
-	url := server + "/renameFolder/" + ln + "/" + nn
+	url := server + "/Folder/" + ln + "/" + nn
 	req, err := http.NewRequest("PUT", url, bytes.NewBuffer(jsonReq))
 	if err != nil {
 		log.Fatalln(err)
@@ -29,9 +29,9 @@ func renameFolder(ln string, nn string, monDossier Sdossier) Sdossier{
 	}
 	defer resp.Body.Close()
 
-	if resp.StatusCode != http.StatusCreated {
-		log.Fatalln(resp.StatusCode)
-	}
+	// if resp.StatusCode != http.StatusCreated {
+	// 	log.Fatalln(resp.StatusCode)
+	// }
 	if resp.StatusCode != http.StatusOK {
 		log.Fatalln(resp.Body)
 	}

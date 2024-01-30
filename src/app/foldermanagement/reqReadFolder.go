@@ -25,16 +25,16 @@ func ReqReadFolder(name string, myFolder Sdossier) {
 }
 
 func readFolder(name string) Sdossier {
-    url := server + "/readFolder/" + name
+    url := server + "/Folder/" + name
     resp, err := http.Get(url)
     if err != nil {
         log.Fatalln(err)
     }
     defer resp.Body.Close()
 
-    if resp.StatusCode != http.StatusOK {
-        log.Fatalln(resp.Body)
-    }
+    // if resp.StatusCode != http.StatusOK {
+    //     log.Fatalln(resp.Body)
+    // }
     var rep Sdossier
     json.NewDecoder(resp.Body).Decode(&rep)
 

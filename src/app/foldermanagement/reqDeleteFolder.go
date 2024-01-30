@@ -16,7 +16,7 @@ func ReqDeleteFolder(name string, myFolder Sdossier) {
 
 func deleteFolder(name string, monDossier Sdossier) Sdossier{
 	jsonReq, _ := json.Marshal(monDossier)
-	url := server + "/deleteFolder/" + name
+	url := server + "/Folder/" + name
 	req, err := http.NewRequest("DELETE", url, bytes.NewBuffer(jsonReq))
 	if err != nil {
 			log.Fatalln(err)

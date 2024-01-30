@@ -28,16 +28,16 @@ func ReqCreateFolder(name string, myFolder Sdossier){
 
 func createFolder(name string, monDossier Sdossier) Sdossier{
 	jsonReq, _ := json.Marshal(monDossier)
-	url := server + "/createFolder/" + name
+	url := server + "/Folder/" + name
 	resp, err := http.Post(url, "application/json; charset=utf-8", bytes.NewBuffer(jsonReq))
 	if err != nil {
 		log.Fatalln(err)
 	}
 	defer resp.Body.Close()
 
-	if resp.StatusCode != http.StatusCreated {
-		log.Fatalln(resp.StatusCode)
-	}
+	// if resp.StatusCode != http.StatusCreated {
+	// 	log.Fatalln(resp.StatusCode)
+	// }
 	if resp.StatusCode != http.StatusOK {
 		log.Fatalln(resp.Body)
 	}

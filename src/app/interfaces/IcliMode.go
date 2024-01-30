@@ -25,12 +25,20 @@ type Schoise struct {
 	conMode	 string
 }
 
+type Children struct {
+	Name string
+}
+
+type Sdossier struct {
+	ID    		string `json:"id"`
+	Name		string `json:"name"`
+	Children	[]Children `json:"children"`
+}
+
 func IcliModeMain(conMode string,arguments []string) {
 	mycli := Schoise{arguments[1], arguments, conMode}
 	execute(&mycli ,mycli)
 }
-
-// TODO: choise where set the switch logic (in the individual interfaces files or in a main file?)
 
 func execute(cl IcliMode, st Schoise) {
 	switch st.mode {
@@ -56,37 +64,41 @@ func execute(cl IcliMode, st Schoise) {
 }
 
 func (cl *Schoise) CreateFolder() (string, error) {
+	myFolder, _, _ := foldermanagement.CreateFolder(cl.arguments[2])
 	if cl.conMode == "offline" {
 		foldermanagement.CreateFolder(cl.arguments[2])
 	} else if cl.conMode == "online" {
-		foldermanagement.ReqCreateFolder(cl.arguments[2])
+		foldermanagement.ReqCreateFolder(cl.arguments[2], myFolder)
 	}
 	return cl.arguments[0], nil
 }
 
 func (cl *Schoise) DeleteFolder() (string, error) {
+	myFolder, _, _ := foldermanagement.CreateFolder(cl.arguments[2])
 	if cl.conMode == "offline" {
 		foldermanagement.DeleteFolder(cl.arguments[2])
 	} else if cl.conMode == "online" {
-		foldermanagement.ReqDeleteFolder(cl.arguments[2])
+		foldermanagement.ReqDeleteFolder(cl.arguments[2], myFolder)
 	}
 	return cl.arguments[0], nil
 }
 
 func (cl *Schoise) ReadFolder() (string, error) {
+	myFolder, _, _ := foldermanagement.CreateFolder(cl.arguments[2])
 	if cl.conMode == "offline" {
 		foldermanagement.ReadFolder(cl.arguments[2])
 	} else if cl.conMode == "online" {
-		foldermanagement.ReqReadFolder(cl.arguments[2])
+		foldermanagement.ReqReadFolder(cl.arguments[2], myFolder)
 	}
 	return cl.arguments[0], nil
 }
 
 func (cl *Schoise) RenameFolder() (string, error) {
+	myFolder, _, _ := foldermanagement.CreateFolder(cl.arguments[2])
 	if cl.conMode == "offline" {
 		foldermanagement.RenameFolder(cl.arguments[2], cl.arguments[3])
 	} else if cl.conMode == "online" {
-		// foldermanagement.ReqRenameFolder(cl.arguments[2], cl.arguments[3])
+		foldermanagement.ReqRenameFolder(cl.arguments[2], cl.arguments[3], myFolder)
 	}
 	return cl.arguments[0], nil
 }

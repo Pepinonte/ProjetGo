@@ -39,7 +39,7 @@ func CreateFolder(path string) (Sdossier, error, []string){
     }
 
     var myFolder = Sdossier{Name: path, Children: children}
-		fmt.Println("myFolder",myFolder)
+		// fmt.Println("myFolder",myFolder)
 
 	database.AddLog(currentTime.Format("2006.01.02 15:04:05"), "foldermanagement", "CreateFolder()", path, output)
 
