@@ -6,6 +6,7 @@ import (
 	"app/foldermanagement"
 	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -29,12 +30,12 @@ func RunListener() {
 	router.DELETE("/deleteFolder/:name", deleteFolder)
 	router.GET("/readFolder/:name", readFolder)
 	router.PUT("/renameFolder/:lname/:nname", renameFolder)
-	router.POST("/createFile/:name", createFile)
-	router.DELETE("/deleteFile/:name", deleteFile)
+	router.POST("/createFile/*name", createFile)
+	router.DELETE("/deleteFile/*name", deleteFile)
 	router.PUT("/modifyFile/:name/:content", modifyFile)
-	router.GET("/readFile/:name", readFile)
+	router.GET("/readFile/*name", readFile)
 	router.PUT("/renameFile/:lname/:nname", renameFile)
-	router.Run("localhost:8080")
+	router.Run("localhost:3307")
 }
 
 //TODO: penser a recuperer des json depuis les fonctions(a partir de strucs)
@@ -75,13 +76,24 @@ func renameFolder(c *gin.Context) {
 
 func createFile(c *gin.Context) {
 	name := c.Param("name")
-	filesmanagement.CreateFile(name)
+	name = strings.TrimPrefix(name, "/") // Remove leading slash
+	body,err := filesmanagement.CreateFile(name)
+	if err != nil {
+		fmt.Println("err", err)
+	}
+	fmt.Println("data",body)
+	c.IndentedJSON(http.StatusCreated, body)
 }
 
 func deleteFile(c *gin.Context) {
 	name := c.Param("name")
-	//fmt.Println("je suis ici")
-	filesmanagement.DeleteFile(name)
+	name = strings.TrimPrefix(name, "/") // Remove leading slash
+	body, err := filesmanagement.DeleteFile(name)
+	if err != nil {
+		fmt.Println("err", err)
+	}
+	c.IndentedJSON(http.StatusOK, body)
+	fmt.Println("Fichier supprimé :",body)
 }
 
 func modifyFile(c *gin.Context) {
@@ -92,13 +104,29 @@ func modifyFile(c *gin.Context) {
 
 func readFile(c *gin.Context) {
 	name := c.Param("name")
-	filesmanagement.ReadFile(name)
+	name = strings.TrimPrefix(name, "/") // Remove leading slash
+	_,_,data := filesmanagement.ReadFile(name)
+	fmt.Println("data",data)
+	c.IndentedJSON(http.StatusOK, data)
 }
 
 func renameFile(c *gin.Context) {
 	lname := c.Param("lname")
-	nname := c.Param("nname")
-	filesmanagement.RenameFile(lname, nname)
+    nname := c.Param("nname")
+
+    // Remove the leading slash from the parameters
+    if len(lname) > 0 && lname[0] == '/' {
+        lname = lname[1:]
+    }
+    if len(nname) > 0 && nname[0] == '/' {
+        nname = nname[1:]
+    }
+
+	body, err := filesmanagement.RenameFile(lname, nname)
+	if err != nil {
+		fmt.Println("err", err)
+	}
+	c.IndentedJSON(http.StatusOK, body)
 }
 
 func showLogs(c *gin.Context) {
