@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func CreateFile(path string) (string, error) {
+func CreateFile(path string) (Sfile, error) {
 
 	database.Condb()
 	currentTime := time.Now()
@@ -15,23 +15,28 @@ func CreateFile(path string) (string, error) {
 
 	if path == "" {
 		output = "le nom du fichier ne peut pas être vide"
-		return "", fmt.Errorf("le nom du fichier ne peut pas être vide")
+		return Sfile{}, fmt.Errorf("le nom du fichier ne peut pas être vide")
 	}
 
 	_, err := os.Stat(path)
 	if err == nil {
 		output = "le fichier existe déjà"
-		return "", fmt.Errorf("le fichier existe déjà")
+		return Sfile{}, fmt.Errorf("le fichier existe déjà")
 	}
 
 	_, err = os.Create(path)
+	
 	if err != nil {
 		output = "impossible de créer le fichier"
 		fmt.Println("impossible de créer le fichier")
-		return "", err
+		return Sfile{}, err
 	}
+
+	var myFile = Sfile{Name: path}
+		//fmt.Println("myFolder",myFile)
+	
 
 	database.AddLog(currentTime.Format("2006-01-02 15:04:05"), "filesmanagement", "createFile", path, output)
 
-	return "succes", nil
+	return myFile, nil
 }

@@ -13,10 +13,10 @@ type IcliMode interface {
 	DeleteFolder() (string, error)
 	ReadFolder() (string, error)
 	RenameFolder() (string, error)
-	CreateFile(path string) (string, error)
-	DeleteFile(path string) (string, error)
-	ReadFile(path string) (string, error)
-	RenameFile(path string) (string, error)
+	CreateFile() (string, error)
+	DeleteFile() (string, error)
+	ReadFile() (string, error)
+	RenameFile() (string, error)
 	ShowLogs() (string, error)
 }
 
@@ -25,6 +25,12 @@ type Schoise struct {
 	mode      string
 	arguments []string
 	conMode	 string
+}
+
+type Sfile struct {
+	ID    		string `json:"id"`
+	Name		string `json:"name"`
+	Content	string `json:"content"`
 }
 
 type Children struct {
@@ -53,13 +59,13 @@ func execute(cl IcliMode, st Schoise) {
 	case "renameFolder":
 		cl.RenameFolder()
 	case "createFile":
-		cl.CreateFile(st.arguments[2])
+		cl.CreateFile()
 	case "deleteFile":
-		cl.DeleteFile(st.arguments[2])
+		cl.DeleteFile()
 	case "readFile":
-		cl.ReadFile(st.arguments[2])
+		cl.ReadFile()
 	case "renameFile":
-		cl.RenameFile(st.arguments[2])
+		cl.RenameFile()
 	case "showLogs":
 		cl.ShowLogs()	
 	}
@@ -131,23 +137,43 @@ func (cl *Schoise) RenameFolder() (string, error) {
 	return cl.arguments[0], nil
 }
 
-func (cl *Schoise) CreateFile(path string) (string, error) {
+func (cl *Schoise) CreateFile() (string, error) {
+	myFile, _ := filesmanagement.CreateFile(cl.arguments[2])
+	if cl.conMode == "offline" {
 	filesmanagement.CreateFile(cl.arguments[2])
+	} else if cl.conMode == "online" {
+		filesmanagement.ReqCreateFile(cl.arguments[2], myFile)
+	}
 	return cl.arguments[0], nil
 }
 
-func (cl *Schoise) DeleteFile(path string) (string, error) {
-	filesmanagement.DeleteFile(cl.arguments[2])
+
+func (cl *Schoise) DeleteFile() (string, error) {
+	if cl.conMode == "offline" {
+		filesmanagement.DeleteFile(cl.arguments[2])
+	} else if cl.conMode == "online" {
+		filesmanagement.ReqDeleteFile(cl.arguments[2], filesmanagement.Sfile{Name: cl.arguments[2]})
+	}
 	return cl.arguments[0], nil
 }
 
-func (cl *Schoise) ReadFile(path string) (string, error) {
-	filesmanagement.ReadFile(cl.arguments[2])
+func (cl *Schoise) ReadFile() (string, error) {
+	//fmt.Println("cl.conMode",cl.conMode)
+	if cl.conMode == "offline" {
+		filesmanagement.ReadFile(cl.arguments[2])
+	} else if cl.conMode == "online" {
+		//fmt.Println("cl.arguments[2]",cl.arguments[2])
+		filesmanagement.ReqReadFile(cl.arguments[2])
+	}
 	return cl.arguments[0], nil
 }
 
-func (cl *Schoise) RenameFile(path string) (string, error) {
+func (cl *Schoise) RenameFile() (string, error) {
+	if cl.conMode == "offline" {
 	filesmanagement.RenameFile(cl.arguments[2], cl.arguments[3])
+	} else if cl.conMode == "online" {
+		filesmanagement.ReqRenameFile(cl.arguments[2], cl.arguments[3], filesmanagement.Sfile{Name: cl.arguments[2]})
+	}
 	return cl.arguments[0], nil
 }
 
